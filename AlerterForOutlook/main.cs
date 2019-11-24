@@ -34,11 +34,11 @@ namespace OutlookReminder
         
         private void main_Load(object sender, EventArgs e)
         {
-        	
-        	searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
-        	tbSearchTitle.Text = searchTitle;
-            notifyIcon1.Visible = true;        	
-      	
+            
+            searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
+            tbSearchTitle.Text = searchTitle;
+            notifyIcon1.Visible = true;            
+          
             if (checkRegistry()== true)
             {
                 cBStartOnLogin.Checked = true;
@@ -114,11 +114,11 @@ namespace OutlookReminder
 
         }
 
-		#endregion
-		
-		/// <summary>
-		/// show alerter window if outlook reminder dialog exists
-		/// </summary>
+        #endregion
+        
+        /// <summary>
+        /// show alerter window if outlook reminder dialog exists
+        /// </summary>
 
         private void checkReminder()
         {
@@ -189,12 +189,12 @@ namespace OutlookReminder
             this.BringToFront();
         }
 
-		
-		void btnSaveSettings_Click(object sender, EventArgs e)
-		{
-			OutlookReminder.Properties.Settings1.Default.ReminderTitle = tbSearchTitle.Text;
-			OutlookReminder.Properties.Settings1.Default.Save();
-		    searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
-		}
+        
+        void btnSaveSettings_Click(object sender, EventArgs e)
+        {
+            OutlookReminder.Properties.Settings1.Default.ReminderTitle = tbSearchTitle.Text;
+            OutlookReminder.Properties.Settings1.Default.Save();
+            searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
+        }
     }
 }
