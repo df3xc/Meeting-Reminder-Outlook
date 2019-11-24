@@ -37,7 +37,7 @@ namespace OutlookReminder
         	
         	searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
         	tbSearchTitle.Text = searchTitle;
-        	
+            notifyIcon1.Visible = true;        	
       	
             if (checkRegistry()== true)
             {
@@ -59,7 +59,7 @@ namespace OutlookReminder
                 this.WindowState = FormWindowState.Minimized;  // TODO
                 this.Hide();
                 e.Cancel = true;
-                notifyIcon1.Visible = true;
+
             }
         }
         
