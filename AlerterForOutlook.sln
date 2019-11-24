@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+# SharpDevelop 5.1
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookAlerter", "AlerterForOutlook\OutlookAlerter.csproj", "{6E9809E5-2E77-49CD-B33D-34AE5905AB2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E9809E5-2E77-49CD-B33D-34AE5905AB2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E9809E5-2E77-49CD-B33D-34AE5905AB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E9809E5-2E77-49CD-B33D-34AE5905AB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E9809E5-2E77-49CD-B33D-34AE5905AB2C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9BA23180-BDB4-4412-ABEC-6659F46814EF}
+	EndGlobalSection
+EndGlobal
