@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Runtime.InteropServices;
+
 
 namespace OutlookReminder
 {
@@ -34,7 +36,6 @@ namespace OutlookReminder
         
         private void main_Load(object sender, EventArgs e)
         {
-            
             searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
             tbSearchTitle.Text = searchTitle;
             notifyIcon1.Visible = true;            
@@ -43,8 +44,7 @@ namespace OutlookReminder
             {
                 cBStartOnLogin.Checked = true;
             }
-            checkReminder();
-
+            checkReminderWindow();
         }
         
         private void main_FormClosing(object sender, FormClosingEventArgs e)
@@ -69,7 +69,7 @@ namespace OutlookReminder
         
         
         /// <summary>
-        /// set "run" key to this application
+        /// set "run" key to this application in the registry
         /// </summary>
         /// 
         private void setRegistry()
@@ -82,7 +82,6 @@ namespace OutlookReminder
                 RegistryKey k = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
                 k.SetValue("DerOutlookAlerter", args[0], RegistryValueKind.String);
             }
-
         }
 
         private Boolean checkRegistry()
@@ -100,10 +99,12 @@ namespace OutlookReminder
             return (rc);
         }
 
+        /// <summary>
+        /// remove "run" key in the registry
+        /// </summary>
+        
         private void clearRegistry()
         {
-            string z = "";
-
             RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
 
             if (key != null)
@@ -117,10 +118,12 @@ namespace OutlookReminder
         #endregion
         
         /// <summary>
-        /// show alerter window if outlook reminder dialog exists
+        /// show alerter window if outlook reminder dialog process exists
+        /// This does not work if you select the outlook main window.
+        /// The Reminder Dialog is then not in the list of processes
         /// </summary>
 
-        private void checkReminder()
+        private void checkReminderProcess()
         {
             Process[] processes = Process.GetProcesses();
             Boolean found = false;
@@ -134,6 +137,12 @@ namespace OutlookReminder
                 title = p.MainWindowTitle;
 
                 Application.DoEvents();
+                logBox.AppendText(name + " : " + title +"\n");                
+                if (name == "OUTLOOK")
+                {
+                	logBox.AppendText(name + " : " + title +"\n");
+                }
+                
 
                 if (name == "OUTLOOK" & title.Contains(searchTitle))
                 {
@@ -146,6 +155,7 @@ namespace OutlookReminder
                         alert.BringToFront();
                         alert.WindowState = FormWindowState.Normal;
                         //alert.WindowState = FormWindowState.Maximized;
+                        logBox.AppendText(name + "\n");
                     }
                 }
 
@@ -158,15 +168,39 @@ namespace OutlookReminder
             }
 
         }
+        
+        
+        /// <summary>
+        /// show alerter window if outlook reminder window exists
+        /// </summary>
+        
+        private void checkReminderWindow()
+        {
+        	Boolean rc = false;
+        	
+        	rc = User32Helper.GetReminderWindow();
+        	
+	        if (rc==true)
+	        {
+	            timer1.Interval = 10000;
+	            
+	            if (alert.isShown == false) 
+	            {
+	                alert.Show();
+	                alert.BringToFront();
+	                alert.WindowState = FormWindowState.Normal;
+	            }
+	        }        	
+        }
 
         private void btnCheckNow_Click(object sender, EventArgs e)
         {
-            checkReminder();
+            checkReminderWindow();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            checkReminder();
+            checkReminderWindow();
         }
 
 
@@ -197,4 +231,55 @@ namespace OutlookReminder
             searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
         }
     }
+    
+public class DesktopWindow
+{
+    public IntPtr Handle { get; set; }
+    public string Title { get; set; }
+    public bool IsVisible { get; set; }
+}
+
+public class User32Helper
+{
+    public delegate bool EnumDelegate(IntPtr hWnd, int lParam);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool IsWindowVisible(IntPtr hWnd);
+
+    [DllImport("user32.dll", EntryPoint = "GetWindowText",
+        ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpWindowText, int nMaxCount);
+
+    [DllImport("user32.dll", EntryPoint = "EnumDesktopWindows",
+        ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern bool EnumDesktopWindows(IntPtr hDesktop, EnumDelegate lpEnumCallbackFunction,
+        IntPtr lParam);
+
+    public static Boolean GetReminderWindow()
+    {
+        Boolean rc = false;
+        string title = "";
+        
+        EnumDelegate filter = delegate(IntPtr hWnd, int lParam)
+        {
+            var result = new StringBuilder(255);
+            GetWindowText(hWnd, result, result.Capacity + 1);
+            title = result.ToString();
+
+            var isVisible = !string.IsNullOrEmpty(title) && IsWindowVisible(hWnd);
+
+            if (title.Contains("Reminder(s)") & isVisible == true)
+                {
+                	rc = true;
+                }                                
+
+            return true;
+        };
+
+        EnumDesktopWindows(IntPtr.Zero, filter, IntPtr.Zero);
+        return rc;
+    }
+}    
+    
 }
