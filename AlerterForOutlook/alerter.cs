@@ -42,7 +42,7 @@ namespace OutlookReminder
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if ((timerTicks % 2) == 0)
+            if ((timerTicks % 4) == 0)
             {
                 this.BackColor = Color.Orange;
             }

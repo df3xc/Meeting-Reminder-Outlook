@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Runtime.InteropServices;
-
+using WebTest;
 
 namespace OutlookReminder
 {
@@ -24,6 +24,14 @@ namespace OutlookReminder
         public string[] args;
         string searchTitle = "";
         alerter alert;
+        Alarm NeckarAlarm;
+        neckar pegel;
+        sendmail mail;
+
+        public int pause_counter = 0;
+        public int send_mail_counter = 0;
+        public int neckar_pegel_warning = 200;
+        public Boolean mail_done = false;
 
         #region main
 
@@ -32,6 +40,11 @@ namespace OutlookReminder
             InitializeComponent();
             args = Environment.GetCommandLineArgs();
             alert = new alerter();
+            pegel = new neckar();
+            NeckarAlarm = new Alarm();
+            mail = new sendmail();
+            timerPegel.Enabled = true;
+            timerCheckOutlook.Enabled = true;
         }
         
         private void main_Load(object sender, EventArgs e)
@@ -45,6 +58,7 @@ namespace OutlookReminder
                 cBStartOnLogin.Checked = true;
             }
             checkReminderWindow();
+            checkWaterLevel();
         }
         
         private void main_FormClosing(object sender, FormClosingEventArgs e)
@@ -55,7 +69,7 @@ namespace OutlookReminder
             }
             else
             {
-                timer1.Interval = 30000;
+                timerCheckOutlook.Interval = 30000;
                 this.WindowState = FormWindowState.Minimized;  // TODO
                 this.Hide();
                 e.Cancel = true;
@@ -137,17 +151,17 @@ namespace OutlookReminder
                 title = p.MainWindowTitle;
 
                 Application.DoEvents();
-                logBox.AppendText(name + " : " + title +"\n");                
+                //ogBox.AppendText(name + " : " + title +"\n");                
                 if (name == "OUTLOOK")
                 {
-                	logBox.AppendText(name + " : " + title +"\n");
+                	//logBox.AppendText(name + " : " + title +"\n");
                 }
                 
 
                 if (name == "OUTLOOK" & title.Contains(searchTitle))
                 {
                     found = true;
-                    timer1.Interval = 10000;
+                    timerCheckOutlook.Interval = 10000;
                     
                     if (alert.isShown == false) 
                     {
@@ -155,7 +169,7 @@ namespace OutlookReminder
                         alert.BringToFront();
                         alert.WindowState = FormWindowState.Normal;
                         //alert.WindowState = FormWindowState.Maximized;
-                        logBox.AppendText(name + "\n");
+                        //logBox.AppendText(name + "\n");
                     }
                 }
 
@@ -164,33 +178,85 @@ namespace OutlookReminder
             if (found == false)
             {
                 alert.doClose();
-                timer1.Interval = 30000;
+                timerCheckOutlook.Interval = 30000;
             }
 
+            float neckarpegel = 0;
+            neckarpegel = pegel.getWaterLevel("Gundelsheim UP");
+
         }
-        
-        
+
+
+        public void checkWaterLevel()
+        {
+            float neckarpegel = 0;
+            DateTime dt = DateTime.Now;
+
+            neckarpegel = pegel.getWaterLevel("Gundelsheim UP");
+            lbPegel.Text = neckarpegel.ToString();
+            NeckarAlarm.tbAlarmText.Text = "Der Pegel in Gundelsheim beträgt " + neckarpegel.ToString() + " cm";
+            NeckarAlarm.Show();
+
+            send_mail_counter++;
+            lbMailCounter.Text = send_mail_counter.ToString();
+
+            if((dt.Minute == 25) && (mail_done == false))
+            {
+                mail.sentOutlookMail("Neckar Pegel per hour ", "Gundelsheim", neckarpegel);
+                mail_done = true;
+            }
+
+            if (dt.Minute == 16) mail_done = false;
+                 
+            if (send_mail_counter > 20)
+            {
+                if (neckarpegel > neckar_pegel_warning)
+                {
+                    mail.sentOutlookMail("Neckar Pegel Gundelsheim", "Gundelsheim", neckarpegel);
+                }
+                send_mail_counter = 0;
+            }
+            
+        }
+
         /// <summary>
         /// show alerter window if outlook reminder window exists
         /// </summary>
-        
+
         private void checkReminderWindow()
         {
         	Boolean rc = false;
-        	
+     	
+            if(cbPause.Checked)
+            {
+                if (alert.isShown) alert.Close();
+
+                pause_counter++;
+                if (pause_counter > 25)
+                {
+                    cbPause.Checked = false;
+                    pause_counter = 0;
+                }
+
+                return;
+            }
+
+
         	rc = User32Helper.GetReminderWindow();
         	
 	        if (rc==true)
 	        {
-	            timer1.Interval = 10000;
+	            timerCheckOutlook.Interval = 10000;
 	            
 	            if (alert.isShown == false) 
 	            {
 	                alert.Show();
 	                alert.BringToFront();
 	                alert.WindowState = FormWindowState.Normal;
+                    alert.isShown = true;
 	            }
-	        }        	
+	        }
+            
         }
 
         private void btnCheckNow_Click(object sender, EventArgs e)
@@ -229,9 +295,33 @@ namespace OutlookReminder
             OutlookReminder.Properties.Settings1.Default.ReminderTitle = tbSearchTitle.Text;
             OutlookReminder.Properties.Settings1.Default.Save();
             searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
+
+            if (cBStartOnLogin.Checked == true)
+            {
+                setRegistry();
+            }
+        }
+
+        private void timerFlash_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timerPegel_Tick(object sender, EventArgs e)
+        {
+            checkWaterLevel();
+        }
+
+        private void cbPause_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbPause.Checked)
+            {
+                if (alert.isShown) alert.Close();
+            }
+
         }
     }
-    
+
 public class DesktopWindow
 {
     public IntPtr Handle { get; set; }

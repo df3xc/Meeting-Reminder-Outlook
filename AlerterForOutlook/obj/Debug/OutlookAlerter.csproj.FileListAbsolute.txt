@@ -1,0 +1,16 @@
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookReminder.main.resources
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookReminder.alerter.resources
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookReminder.Properties.Resources.resources
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookAlerter.csproj.GenerateResource.cache
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookAlerter.csproj.CoreCompileInputs.cache
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\OutlookReminder.exe.config
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\OutlookReminder.exe
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\fastJSON.dll
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\Newtonsoft.Json.dll
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\Newtonsoft.Json.xml
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookAlerter.csproj.CopyComplete
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookReminder.exe
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookReminder.pdb
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\OutlookReminder.pdb
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\WebTest.Alarm.resources
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookAlerter.csproj.AssemblyReference.cache
