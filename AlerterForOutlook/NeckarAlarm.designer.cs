@@ -35,9 +35,9 @@ namespace WebTest
             // tbAlarmText
             // 
             this.tbAlarmText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbAlarmText.Location = new System.Drawing.Point(47, 79);
+            this.tbAlarmText.Location = new System.Drawing.Point(43, 52);
             this.tbAlarmText.Name = "tbAlarmText";
-            this.tbAlarmText.Size = new System.Drawing.Size(1310, 49);
+            this.tbAlarmText.Size = new System.Drawing.Size(1085, 49);
             this.tbAlarmText.TabIndex = 0;
             // 
             // Alarm
@@ -45,10 +45,10 @@ namespace WebTest
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Tomato;
-            this.ClientSize = new System.Drawing.Size(1418, 226);
+            this.ClientSize = new System.Drawing.Size(1175, 169);
             this.Controls.Add(this.tbAlarmText);
             this.Name = "Alarm";
-            this.Text = "Alarm";
+            this.Text = "Neckar Pegel Alarm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Alarm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

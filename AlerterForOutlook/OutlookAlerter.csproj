@@ -57,11 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alarm.cs">
+    <Compile Include="NeckarAlarm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Alarm.designer.cs">
-      <DependentUpon>Alarm.cs</DependentUpon>
+    <Compile Include="NeckarAlarm.designer.cs">
+      <DependentUpon>NeckarAlarm.cs</DependentUpon>
     </Compile>
     <Compile Include="main.cs">
       <SubType>Form</SubType>
@@ -82,10 +82,11 @@
     <Compile Include="Properties\Settings1.Designer.cs">
       <DependentUpon>Settings1.settings</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="sendmail.cs" />
-    <EmbeddedResource Include="Alarm.resx">
-      <DependentUpon>Alarm.cs</DependentUpon>
+    <EmbeddedResource Include="NeckarAlarm.resx">
+      <DependentUpon>NeckarAlarm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="main.resx">
       <DependentUpon>main.cs</DependentUpon>
@@ -110,6 +111,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="alarm.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="warning.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

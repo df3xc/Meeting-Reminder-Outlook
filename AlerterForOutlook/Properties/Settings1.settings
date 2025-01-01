@@ -1,11 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<SettingsFile CurrentProfile="(Default)" GeneratedClassNamespace="OutlookReminder.Properties" GeneratedClassName="Settings1" xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="OutlookReminder.Properties" GeneratedClassName="Settings1">
+  <Profiles />
   <Settings>
-    <Setting Name="ReminderTitle" Type="System.String" Scope="User" Roaming="false">
+    <Setting Name="ReminderTitle" Type="System.String" Scope="User">
       <Value Profile="(Default)">Reminder</Value>
+    </Setting>
+    <Setting Name="WarningLevel" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">220</Value>
+    </Setting>
+    <Setting Name="Alarmlevel" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">450</Value>
     </Setting>
   </Settings>
 </SettingsFile>

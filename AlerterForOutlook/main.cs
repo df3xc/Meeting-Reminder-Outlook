@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Threading;
+using System.IO;
 using System.Runtime.InteropServices;
 using WebTest;
 
@@ -30,7 +32,12 @@ namespace OutlookReminder
 
         public int pause_counter = 0;
         public int send_mail_counter = 0;
-        public int neckar_pegel_warning = 200;
+        public float neckar_pegel_warning = 0;
+        public float neckar_alarm_pegel = 0;
+        public int time_intervall = 30;
+        public int time_default_intervall = 120;
+        public int time = 0;
+        public int old_time = 0;
         public Boolean mail_done = false;
 
         #region main
@@ -45,11 +52,15 @@ namespace OutlookReminder
             mail = new sendmail();
             timerPegel.Enabled = true;
             timerCheckOutlook.Enabled = true;
+
+            time_intervall = time_default_intervall;
         }
         
         private void main_Load(object sender, EventArgs e)
         {
             searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
+            neckar_pegel_warning = OutlookReminder.Properties.Settings1.Default.WarningLevel;
+            neckar_alarm_pegel = OutlookReminder.Properties.Settings1.Default.Alarmlevel;
             tbSearchTitle.Text = searchTitle;
             notifyIcon1.Visible = true;            
           
@@ -58,7 +69,9 @@ namespace OutlookReminder
                 cBStartOnLogin.Checked = true;
             }
             checkReminderWindow();
-            checkWaterLevel();
+            verifyWaterLevel();
+            float neckarpegel = pegel.getWaterLevel("Gundelsheim UP");
+            lbPegel.Text = neckarpegel.ToString();
         }
         
         private void main_FormClosing(object sender, FormClosingEventArgs e)
@@ -181,42 +194,77 @@ namespace OutlookReminder
                 timerCheckOutlook.Interval = 30000;
             }
 
-            float neckarpegel = 0;
-            neckarpegel = pegel.getWaterLevel("Gundelsheim UP");
-
         }
 
-
-        public void checkWaterLevel()
+        public void sendEmails(string subject,float neckarpegel, string email_config_file)
         {
-            float neckarpegel = 0;
-            DateTime dt = DateTime.Now;
+            string[] lines;
+            string[] separators = new string[] { "\r\n" };
 
-            neckarpegel = pegel.getWaterLevel("Gundelsheim UP");
-            lbPegel.Text = neckarpegel.ToString();
-            NeckarAlarm.tbAlarmText.Text = "Der Pegel in Gundelsheim beträgt " + neckarpegel.ToString() + " cm";
-            NeckarAlarm.Show();
-
-            send_mail_counter++;
-            lbMailCounter.Text = send_mail_counter.ToString();
-
-            if((dt.Minute == 25) && (mail_done == false))
+            if(File.Exists(email_config_file)==false)
             {
-                mail.sentOutlookMail("Neckar Pegel per hour ", "Gundelsheim", neckarpegel);
+                tbStatus.Text = "Error " + email_config_file + " not found";
+                return;
+            }
+
+            string content = File.ReadAllText(email_config_file);
+            lines = content.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int k = 0; k < lines.Length; k++)
+            {
+                mail.sentOutlookMail(lines[k], subject , "Gundelsheim", neckarpegel);
                 mail_done = true;
             }
 
-            if (dt.Minute == 16) mail_done = false;
-                 
-            if (send_mail_counter > 20)
+        }
+
+        public void verifyWaterLevel()
+
+        {
+            float neckarpegel = 0;
+
+            neckarpegel = pegel.getWaterLevel("Gundelsheim UP");
+            lbPegel.Text = neckarpegel.ToString();
+
+            if (neckarpegel > neckar_pegel_warning)
             {
-                if (neckarpegel > neckar_pegel_warning)
-                {
-                    mail.sentOutlookMail("Neckar Pegel Gundelsheim", "Gundelsheim", neckarpegel);
-                }
-                send_mail_counter = 0;
+                NeckarAlarm.tbAlarmText.Text = "Der Pegel in Gundelsheim beträgt " + neckarpegel.ToString() + " cm";
+                NeckarAlarm.Show();
+                sendEmails("Nackar Pegel Warning", neckarpegel, "warning.txt");
+                time_intervall = 30;
             }
-            
+            else time_intervall = time_default_intervall;
+
+            if (neckarpegel > neckar_alarm_pegel)
+            {
+                NeckarAlarm.tbAlarmText.Text = "ALARM : Der in Gundelsheim beträgt " + neckarpegel.ToString() + " cm";
+                NeckarAlarm.Show();
+                sendEmails("Neckar Pegel Alarm", neckarpegel, "alarm.txt");
+                time_intervall = 30;
+            }
+        }
+
+        public void checkWaterLevel()
+        {
+
+            DateTime dt = DateTime.Now;
+
+            searchTitle = OutlookReminder.Properties.Settings1.Default.ReminderTitle;
+            neckar_pegel_warning = OutlookReminder.Properties.Settings1.Default.WarningLevel;
+            neckar_alarm_pegel = OutlookReminder.Properties.Settings1.Default.Alarmlevel;
+
+            old_time = time;
+            time = 60 * dt.Hour + dt.Minute;
+
+            lbMinute.Text = dt.Minute.ToString();
+
+            if(((time % time_intervall) == 0) && (mail_done == false))
+            {
+                verifyWaterLevel();
+            }
+
+            if ((time % time_intervall) == 1) mail_done = false;
+           
         }
 
         /// <summary>
@@ -262,6 +310,11 @@ namespace OutlookReminder
         private void btnCheckNow_Click(object sender, EventArgs e)
         {
             checkReminderWindow();
+            lbPegel.Text = "-----";
+            Application.DoEvents();
+            Thread.Sleep(500);
+            verifyWaterLevel();
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -287,6 +340,13 @@ namespace OutlookReminder
             this.Show();
             this.WindowState = FormWindowState.Normal;
             this.BringToFront();
+
+            lbPegel.Text = "-----";
+            Application.DoEvents();
+            Thread.Sleep(500);
+            float neckarpegel = 0;
+            neckarpegel = pegel.getWaterLevel("Gundelsheim UP");
+            lbPegel.Text = neckarpegel.ToString();
         }
 
         

@@ -42,7 +42,8 @@
             this.cbPause = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.lbMailCounter = new System.Windows.Forms.Label();
+            this.lbMinute = new System.Windows.Forms.Label();
+            this.tbStatus = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnCheckNow
@@ -50,9 +51,9 @@
             this.btnCheckNow.Location = new System.Drawing.Point(38, 27);
             this.btnCheckNow.Margin = new System.Windows.Forms.Padding(2);
             this.btnCheckNow.Name = "btnCheckNow";
-            this.btnCheckNow.Size = new System.Drawing.Size(461, 62);
+            this.btnCheckNow.Size = new System.Drawing.Size(502, 62);
             this.btnCheckNow.TabIndex = 0;
-            this.btnCheckNow.Text = "Check Reminder Now";
+            this.btnCheckNow.Text = "Check Reminder / Neckar pegel Now";
             this.btnCheckNow.UseVisualStyleBackColor = true;
             this.btnCheckNow.Click += new System.EventHandler(this.btnCheckNow_Click);
             // 
@@ -86,7 +87,7 @@
             this.tbSearchTitle.Location = new System.Drawing.Point(38, 154);
             this.tbSearchTitle.Margin = new System.Windows.Forms.Padding(2);
             this.tbSearchTitle.Name = "tbSearchTitle";
-            this.tbSearchTitle.Size = new System.Drawing.Size(299, 31);
+            this.tbSearchTitle.Size = new System.Drawing.Size(328, 31);
             this.tbSearchTitle.TabIndex = 3;
             // 
             // label1
@@ -100,7 +101,7 @@
             // 
             // btnSaveSettings
             // 
-            this.btnSaveSettings.Location = new System.Drawing.Point(358, 121);
+            this.btnSaveSettings.Location = new System.Drawing.Point(399, 123);
             this.btnSaveSettings.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveSettings.Name = "btnSaveSettings";
             this.btnSaveSettings.Size = new System.Drawing.Size(141, 62);
@@ -121,7 +122,7 @@
             // 
             // timerPegel
             // 
-            this.timerPegel.Interval = 30000;
+            this.timerPegel.Interval = 10000;
             this.timerPegel.Tick += new System.EventHandler(this.timerPegel_Tick);
             // 
             // cbPause
@@ -153,23 +154,31 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "Registry Key \"DerOutlookAlerter\"";
             // 
-            // lbMailCounter
+            // lbMinute
             // 
-            this.lbMailCounter.AutoSize = true;
-            this.lbMailCounter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbMailCounter.Location = new System.Drawing.Point(365, 235);
-            this.lbMailCounter.Name = "lbMailCounter";
-            this.lbMailCounter.Size = new System.Drawing.Size(192, 37);
-            this.lbMailCounter.TabIndex = 10;
-            this.lbMailCounter.Text = "mail counter";
+            this.lbMinute.AutoSize = true;
+            this.lbMinute.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbMinute.Location = new System.Drawing.Point(365, 235);
+            this.lbMinute.Name = "lbMinute";
+            this.lbMinute.Size = new System.Drawing.Size(192, 37);
+            this.lbMinute.TabIndex = 10;
+            this.lbMinute.Text = "mail counter";
+            // 
+            // tbStatus
+            // 
+            this.tbStatus.Location = new System.Drawing.Point(44, 438);
+            this.tbStatus.Name = "tbStatus";
+            this.tbStatus.Size = new System.Drawing.Size(496, 31);
+            this.tbStatus.TabIndex = 11;
             // 
             // main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Chocolate;
-            this.ClientSize = new System.Drawing.Size(583, 453);
-            this.Controls.Add(this.lbMailCounter);
+            this.ClientSize = new System.Drawing.Size(583, 493);
+            this.Controls.Add(this.tbStatus);
+            this.Controls.Add(this.lbMinute);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cbPause);
@@ -203,7 +212,8 @@
         private System.Windows.Forms.CheckBox cbPause;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label lbMailCounter;
+        private System.Windows.Forms.Label lbMinute;
+        private System.Windows.Forms.TextBox tbStatus;
     }
 }
 

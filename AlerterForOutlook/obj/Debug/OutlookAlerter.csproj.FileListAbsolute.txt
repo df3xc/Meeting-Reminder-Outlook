@@ -14,3 +14,5 @@ D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForO
 D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\OutlookReminder.pdb
 D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\WebTest.Alarm.resources
 D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\obj\Debug\OutlookAlerter.csproj.AssemblyReference.cache
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\alarm.txt
+D:\OneDrive\Programming\CS_Outlook_Reminder\Meeting-Reminder-Outlook\AlerterForOutlook\bin\Debug\warning.txt
